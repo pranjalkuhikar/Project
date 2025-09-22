@@ -20,11 +20,8 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: 22
           debug: true
-          source: |
-            client/**
-            server/**
-            .dockerignore
-            Dockerfile
+          # Use comma-separated list so drone-scp expands correctly
+          source: ./client/**,./server/**,./.dockerignore,./Dockerfile
           target: "~/mern-app"
           rm: true
           strip_components: 0
