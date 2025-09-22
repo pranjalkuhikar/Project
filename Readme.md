@@ -14,7 +14,6 @@ server/                # Express backend
     models/            # Mongoose models (e.g., user.model.js)
     db/                # DB connection
     configs/           # Env config (PORT, MONGOURI)
-    utils/initDB.js    # Optional: seed states/cities
 ```
 
 ### Prerequisites
