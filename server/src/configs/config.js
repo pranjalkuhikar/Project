@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-config.dotenv();
+dotenv.config();
 
 const _config = {
   PORT: process.env.PORT,
