@@ -8,8 +8,9 @@ function AppRouter() {
   return (
     <Router>
       <Navbar />
-      <div style={{ minHeight: "80vh", padding: "20px" }}>
+      <div className="min-h-[83.9vh] p-5">
         <Routes>
+          <Route path="/" element={<Show />} />
           <Route path="/create" element={<Create />} />
           <Route path="/show" element={<Show />} />
         </Routes>
