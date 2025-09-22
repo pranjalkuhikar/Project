@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-export default function CreateForm() {
+export default function EditForm() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const location = useLocation();
 
   const [form, setForm] = useState({
     name: "",
@@ -42,10 +44,10 @@ export default function CreateForm() {
         city: form.city,
         address: form.address,
       };
-      await axios.post("http://localhost:8000/api/v1/users", payload, {
+      await axios.put(`http://localhost:8000/api/v1/users/${id}`, payload, {
         headers: { "Content-Type": "application/json" },
       });
-      alert("Form saved ✅");
+      alert("Updated ✅");
       navigate("/show");
     } catch (error) {
       const message = error?.response?.data?.message || "Failed to save";
@@ -54,10 +56,51 @@ export default function CreateForm() {
     }
   };
 
+  useEffect(() => {
+    const prefilled = location.state;
+    if (prefilled) {
+      setForm({
+        name: prefilled.name || "",
+        mobile: prefilled.mobileNumber || "",
+        state: prefilled.state || "",
+        city: prefilled.city || "",
+        address: prefilled.address || "",
+      });
+      if (prefilled.state) {
+        const statesCities = {
+          Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+          Gujarat: ["Ahmedabad", "Surat", "Rajkot"],
+        };
+        setCities(statesCities[prefilled.state] || []);
+      }
+      return;
+    }
+    axios
+      .get(`http://localhost:8000/api/v1/users`)
+      .then((res) => {
+        const found = (res.data.users || []).find((u) => u._id === id);
+        if (found) {
+          setForm({
+            name: found.name || "",
+            mobile: found.mobileNumber || "",
+            state: found.state || "",
+            city: found.city || "",
+            address: found.address || "",
+          });
+          const statesCitiesLocal = {
+            Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+            Gujarat: ["Ahmedabad", "Surat", "Rajkot"],
+          };
+          setCities(statesCitiesLocal[found.state] || []);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, [id, location.state]);
+
   return (
     <div className="container mx-auto p-8 bg-white shadow-lg rounded-lg mt-8 max-w-md">
       <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
-        Create New Entry
+        Edit Entry
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -75,6 +118,7 @@ export default function CreateForm() {
             onChange={handleChange}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             required
+            value={form.name}
           />
         </div>
         <div>
@@ -94,6 +138,7 @@ export default function CreateForm() {
             pattern="[0-9]{10}"
             maxLength="10"
             required
+            value={form.mobile}
           />
         </div>
 
@@ -109,6 +154,7 @@ export default function CreateForm() {
             name="state"
             onChange={handleChange}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            value={form.state}
             required
           >
             <option value="">Select State</option>
@@ -157,6 +203,7 @@ export default function CreateForm() {
             placeholder="Enter your address"
             onChange={handleChange}
             rows="3"
+            value={form.address}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             required
           ></textarea>

@@ -1,20 +1,30 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function ShowForm() {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/v1/users").then((res)=>setData(res.data.users)).catch((err)=>console.log(err))
+    axios
+      .get("http://localhost:8000/api/v1/users")
+      .then((res) => setData(res.data.users))
+      .catch((err) => console.log(err));
   }, []);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/v1/users/${id}`);
+      setData((prev) => prev.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete");
+    }
   };
 
-  const handleEdit = (id) => {
-    console.log("Edit item with id:", id);
-    // Implement edit logic here
+  const handleEdit = (item) => {
+    navigate(`/edit/${item._id}`, { state: item });
   };
 
   return (
@@ -84,13 +94,13 @@ export default function ShowForm() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
-                    onClick={() => handleEdit(item.id)}
+                    onClick={() => handleEdit(item)}
                     className="text-indigo-600 hover:text-indigo-900 mr-4"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(item._id)}
                     className="text-red-600 hover:text-red-900"
                   >
                     Delete

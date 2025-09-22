@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Create from "../pages/Create";
 import Show from "../pages/Show";
+import Edit from "../pages/Edit";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -13,6 +14,7 @@ function AppRouter() {
           <Route path="/" element={<Show />} />
           <Route path="/create" element={<Create />} />
           <Route path="/show" element={<Show />} />
+          <Route path="/edit/:id" element={<Edit />} />
         </Routes>
       </div>
       <Footer />
