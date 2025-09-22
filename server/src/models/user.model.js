@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const formSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -11,10 +11,11 @@ const formSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return /^\d{10}$/.test(v);
       },
-      message: props => `${props.value} is not a valid 10 digit mobile number!`
+      message: (props) =>
+        `${props.value} is not a valid 10 digit mobile number!`,
     },
   },
   state: {
@@ -34,6 +35,6 @@ const formSchema = new mongoose.Schema({
   },
 });
 
-const Form = mongoose.model('Form', formSchema);
+const User = mongoose.model("User", userSchema);
 
-module.exports = Form;
+module.exports = User;
