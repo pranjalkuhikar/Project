@@ -1,8 +1,8 @@
 import express from "express";
-import formRoute from "./state.routes.js";
+import userRoute from "./user.routes.js";
 
 const router = express.Router();
 
-router.use("/v1", formRoute);
+router.use("/v1", userRoute);
 
 export default router;

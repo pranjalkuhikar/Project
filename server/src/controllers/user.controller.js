@@ -1,4 +1,4 @@
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 
 export const createUser = (req, res) => {
   const { name, mobileNumber, state, city, address } = req.body;
