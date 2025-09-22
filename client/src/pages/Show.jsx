@@ -93,18 +93,24 @@ export default function ShowForm() {
                   {item.address}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="text-indigo-600 hover:text-indigo-900 mr-4"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    Delete
-                  </button>
+                  <div className="flex items-center justify-end gap-3">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="inline-flex items-center px-3 py-1.5 rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-colors"
+                      aria-label="Edit"
+                      title="Edit"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="inline-flex items-center px-3 py-1.5 rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm transition-colors"
+                      aria-label="Delete"
+                      title="Delete"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

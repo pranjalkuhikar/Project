@@ -124,6 +124,28 @@ Client (`client/package.json`):
 
 - `npm run dev` — Start Vite dev server
 
+### Deployment (GitHub Actions → EC2)
+
+This repo includes a GitHub Actions workflow to deploy the app to an Ubuntu EC2 instance.
+
+- Workflow name: `task` (`.github/workflows/deploy-ec2.yml`)
+- You must configure the following repository secrets in GitHub:
+  - `EC2_HOST` — public IP or DNS of the instance
+  - `EC2_KEY` — private SSH key for the `ubuntu` user (Base64 or plain multiline; match the workflow usage)
+  - `PORT` — server port, e.g. `8000`
+  - `MONGOURI` — MongoDB connection string used on the server
+
+Typical target is an Ubuntu 24.04 (Noble) EC2 instance. Ensure it allows inbound traffic on the chosen `PORT` and SSH (22). The workflow connects over SSH, uploads the build, installs dependencies, and restarts the app service.
+
+### UI Notes
+
+The list page (`client/src/pages/Show.jsx`) now uses prominent buttons for actions:
+
+- Edit: indigo button with hover/focus states
+- Delete: red button with hover/focus states
+
+If you prefer icon buttons or need a confirm dialog on delete, see the `Show.jsx` action cell to extend.
+
 ### License
 
 MIT
