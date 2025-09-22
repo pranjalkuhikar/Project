@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
+import config from "../configs/config.js";
 
-const stateSchema = new mongoose.Schema({
-  state: { type: String, required: true },
-  cities: { type: [String], required: true },
-});
+const connectDB = mongoose
+  .connect(config.MONGOURI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log(err));
 
-const state = new mongoose.model("state", stateSchema);
-
-export default state;
+export default connectDB;
