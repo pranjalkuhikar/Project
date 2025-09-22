@@ -1,3 +1,6 @@
-export const stateController = (req, res) => {
-  res.send("Hello State");
+import state from "../models/state.model.js";
+
+export const getStates = async (req, res) => {
+  const states = await state.find({}, "name");
+  res.json(states);
 };

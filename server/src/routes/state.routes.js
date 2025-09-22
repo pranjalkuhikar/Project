@@ -1,8 +1,8 @@
 import express from "express";
-import { stateController } from "../controllers/state.controller.js";
+import { getStates } from "../controllers/state.controller.js";
 
 const router = express.Router();
 
-router.post("/form", stateController);
+router.get("/states", getStates);
 
 export default router;
