@@ -1,29 +1,11 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function ShowForm() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // Dummy data for demonstration
-    const dummyData = [
-      {
-        id: 1,
-        name: "John Doe",
-        mobile: "1234567890",
-        state: "California",
-        city: "Los Angeles",
-        address: "123 Main St",
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        mobile: "0987654321",
-        state: "New York",
-        city: "New York City",
-        address: "456 Oak Ave",
-      },
-    ];
-    setData(dummyData);
+    axios.get("http://localhost:8000/api/v1/users").then((res)=>setData(res.data.users)).catch((err)=>console.log(err))
   }, []);
 
   const handleDelete = (id) => {
@@ -84,12 +66,12 @@ export default function ShowForm() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {data.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-100">
+              <tr key={item._id} className="hover:bg-gray-100">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {item.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.mobile}
+                  {item.mobileNumber}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {item.state}
