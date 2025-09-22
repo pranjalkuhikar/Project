@@ -3,6 +3,10 @@ import User from "../models/user.model.js";
 export const createUser = async (req, res) => {
   try {
     const { name, mobileNumber, state, city, address } = req.body;
+    const number = await User.findOne({mobileNumber})
+    if(number){
+      return res.status(400).json({message:"Number is already exits"})
+    }
     const user = new User({ name, mobileNumber, state, city, address });
     await user.save();
     res.status(201).json({
