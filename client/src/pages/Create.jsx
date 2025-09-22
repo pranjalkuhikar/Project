@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 export default function CreateForm() {
   const [form, setForm] = useState({
@@ -10,7 +9,6 @@ export default function CreateForm() {
   });
 
   const [cities, setCities] = useState([]);
-  const router = useRouter();
 
   const statesCities = {
     Maharashtra: ["Mumbai", "Pune", "Nagpur"],
@@ -36,7 +34,6 @@ export default function CreateForm() {
       body: JSON.stringify(form),
     });
     alert("Form saved ✅");
-    router.push("/show");
   };
 
   return (
