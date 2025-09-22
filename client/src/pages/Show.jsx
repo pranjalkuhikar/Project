@@ -8,14 +8,14 @@ export default function ShowForm() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/v1/users")
+      .get("/api/v1/users")
       .then((res) => setData(res.data.users))
       .catch((err) => console.log(err));
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/users/${id}`);
+      await axios.delete(`/api/v1/users/${id}`);
       setData((prev) => prev.filter((item) => item._id !== id));
     } catch (error) {
       console.error(error);

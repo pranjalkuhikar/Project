@@ -42,7 +42,7 @@ export default function CreateForm() {
         city: form.city,
         address: form.address,
       };
-      await axios.post("http://localhost:8000/api/v1/users", payload, {
+      await axios.post("/api/v1/users", payload, {
         headers: { "Content-Type": "application/json" },
       });
       alert("Form saved ✅");

@@ -44,7 +44,7 @@ export default function EditForm() {
         city: form.city,
         address: form.address,
       };
-      await axios.put(`http://localhost:8000/api/v1/users/${id}`, payload, {
+      await axios.put(`/api/v1/users/${id}`, payload, {
         headers: { "Content-Type": "application/json" },
       });
       alert("Updated ✅");
@@ -76,7 +76,7 @@ export default function EditForm() {
       return;
     }
     axios
-      .get(`http://localhost:8000/api/v1/users`)
+      .get(`/api/v1/users`)
       .then((res) => {
         const found = (res.data.users || []).find((u) => u._id === id);
         if (found) {
