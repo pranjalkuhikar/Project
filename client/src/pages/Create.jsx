@@ -3,9 +3,10 @@ import { useState } from "react";
 export default function CreateForm() {
   const [form, setForm] = useState({
     name: "",
-    email: "",
+    mobile: "",
     state: "",
     city: "",
+    address: "",
   });
 
   const [cities, setCities] = useState([]);
@@ -17,12 +18,14 @@ export default function CreateForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-
-    if (name === "state") {
-      setCities(statesCities[value] || []);
-      setForm({ ...form, state: value, city: "" });
-    }
+    setForm((prevForm) => {
+      const newForm = { ...prevForm, [name]: value };
+      if (name === "state") {
+        setCities(statesCities[value] || []);
+        newForm.city = ""; // Reset city when state changes
+      }
+      return newForm;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -38,10 +41,17 @@ export default function CreateForm() {
 
   return (
     <div className="container mx-auto p-8 bg-white shadow-lg rounded-lg mt-8 max-w-md">
-      <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Create New Entry</h2>
+      <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
+        Create New Entry
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Name <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             id="name"
@@ -49,27 +59,42 @@ export default function CreateForm() {
             placeholder="Enter your name"
             onChange={handleChange}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+          <label
+            htmlFor="mobile"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Mobile Number <span className="text-red-500">*</span>
+          </label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
+            type="tel"
+            id="mobile"
+            name="mobile"
+            placeholder="Enter your mobile number (10 digits)"
             onChange={handleChange}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            pattern="[0-9]{10}"
+            maxLength="10"
+            required
           />
         </div>
 
         <div>
-          <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+          <label
+            htmlFor="state"
+            className="block text-sm font-medium text-gray-700"
+          >
+            State <span className="text-red-500">*</span>
+          </label>
           <select
             id="state"
             name="state"
             onChange={handleChange}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
           >
             <option value="">Select State</option>
             {Object.keys(statesCities).map((st) => (
@@ -81,13 +106,19 @@ export default function CreateForm() {
         </div>
 
         <div>
-          <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
+          <label
+            htmlFor="city"
+            className="block text-sm font-medium text-gray-700"
+          >
+            City <span className="text-red-500">*</span>
+          </label>
           <select
             id="city"
             name="city"
             onChange={handleChange}
             value={form.city}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
           >
             <option value="">Select City</option>
             {cities.map((c) => (
@@ -96,6 +127,24 @@ export default function CreateForm() {
               </option>
             ))}
           </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="address"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Address <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            id="address"
+            name="address"
+            placeholder="Enter your address"
+            onChange={handleChange}
+            rows="3"
+            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
+          ></textarea>
         </div>
 
         <button
