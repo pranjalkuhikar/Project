@@ -17,5 +17,18 @@ export const getUser = (req, res) => {
   });
 };
 
-export const updateUser = (req, res) => {};
-export const deleteUser = (req, res) => {};
+export const updateUser = (req, res) => {
+  const { id } = req.query.id;
+  const { newData } = req.body;
+  const user = User.findByIdAndUpdate(id, { newData });
+  res.status(200).json({
+    user,
+  });
+};
+export const deleteUser = (req, res) => {
+  const { id } = req.query.id;
+  const user = User.findByIdAndDelete(id);
+  res.status(200).json({
+    user,
+  });
+};
