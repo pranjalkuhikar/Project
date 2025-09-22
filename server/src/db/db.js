@@ -5,6 +5,9 @@ const connectDB = () =>
   mongoose
     .connect(config.MONGOURI)
     .then(() => console.log("MongoDB Connected"))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
+    });
 
 export default connectDB;
