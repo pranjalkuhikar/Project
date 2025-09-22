@@ -1,7 +1,7 @@
 ###############
 # Frontend build
 ###############
-FROM node:18-bullseye AS frontend-builder
+FROM node:20-bullseye AS frontend-builder
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN cd client && npm run build
 ###############
 # Backend runtime
 ###############
-FROM node:18-bullseye AS backend
+FROM node:20-bullseye AS backend
 
 ENV NODE_ENV=production
 WORKDIR /app
