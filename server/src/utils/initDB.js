@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import State from "./models/State.js";
+import state from "../models/state.model.js";
+import connectDB from "../db/db.js";
 
 const seedData = [
   { name: "Maharashtra", cities: ["Mumbai", "Pune", "Nagpur"] },
@@ -7,10 +8,10 @@ const seedData = [
 ];
 
 async function insertData() {
-  await State.deleteMany();
-  await State.insertMany(seedData);
+  await connectDB();
+  await state.deleteMany();
+  await state.insertMany(seedData);
   console.log("Data inserted");
-  mongoose.disconnect();
 }
 
 insertData();
