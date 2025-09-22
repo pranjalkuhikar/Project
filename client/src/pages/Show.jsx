@@ -40,6 +40,12 @@ export default function ShowForm() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
+                Sr. No.
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 Name
               </th>
               <th
@@ -75,8 +81,11 @@ export default function ShowForm() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((item) => (
+            {data.map((item, idx) => (
               <tr key={item._id} className="hover:bg-gray-100">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {idx + 1}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {item.name}
                 </td>

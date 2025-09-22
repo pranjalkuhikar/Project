@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -13,20 +13,30 @@ export default function CreateForm() {
     address: "",
   });
 
+  const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const statesCities = {
-    Maharashtra: ["Mumbai", "Pune", "Nagpur"],
-    Gujarat: ["Ahmedabad", "Surat", "Rajkot"],
-  };
+  useEffect(() => {
+    axios
+      .get("/api/v1/locations/states")
+      .then((res) => setStates(res.data.states || []))
+      .catch(() => setStates([]));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prevForm) => {
       const newForm = { ...prevForm, [name]: value };
       if (name === "state") {
-        setCities(statesCities[value] || []);
         newForm.city = "";
+        if (value) {
+          axios
+            .get(`/api/v1/locations/${encodeURIComponent(value)}/cities`)
+            .then((res) => setCities(res.data.cities || []))
+            .catch(() => setCities([]));
+        } else {
+          setCities([]);
+        }
       }
       return newForm;
     });
@@ -112,7 +122,7 @@ export default function CreateForm() {
             required
           >
             <option value="">Select State</option>
-            {Object.keys(statesCities).map((st) => (
+            {states.map((st) => (
               <option key={st} value={st}>
                 {st}
               </option>

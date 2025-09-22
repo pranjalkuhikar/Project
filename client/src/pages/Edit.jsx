@@ -15,20 +15,23 @@ export default function EditForm() {
     address: "",
   });
 
+  const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
-
-  const statesCities = {
-    Maharashtra: ["Mumbai", "Pune", "Nagpur"],
-    Gujarat: ["Ahmedabad", "Surat", "Rajkot"],
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prevForm) => {
       const newForm = { ...prevForm, [name]: value };
       if (name === "state") {
-        setCities(statesCities[value] || []);
         newForm.city = "";
+        if (value) {
+          axios
+            .get(`/api/v1/locations/${encodeURIComponent(value)}/cities`)
+            .then((res) => setCities(res.data.cities || []))
+            .catch(() => setCities([]));
+        } else {
+          setCities([]);
+        }
       }
       return newForm;
     });
@@ -57,6 +60,12 @@ export default function EditForm() {
   };
 
   useEffect(() => {
+    // Load states list
+    axios
+      .get("/api/v1/locations/states")
+      .then((res) => setStates(res.data.states || []))
+      .catch(() => setStates([]));
+
     const prefilled = location.state;
     if (prefilled) {
       setForm({
@@ -67,11 +76,12 @@ export default function EditForm() {
         address: prefilled.address || "",
       });
       if (prefilled.state) {
-        const statesCities = {
-          Maharashtra: ["Mumbai", "Pune", "Nagpur"],
-          Gujarat: ["Ahmedabad", "Surat", "Rajkot"],
-        };
-        setCities(statesCities[prefilled.state] || []);
+        axios
+          .get(
+            `/api/v1/locations/${encodeURIComponent(prefilled.state)}/cities`
+          )
+          .then((res) => setCities(res.data.cities || []))
+          .catch(() => setCities([]));
       }
       return;
     }
@@ -87,11 +97,14 @@ export default function EditForm() {
             city: found.city || "",
             address: found.address || "",
           });
-          const statesCitiesLocal = {
-            Maharashtra: ["Mumbai", "Pune", "Nagpur"],
-            Gujarat: ["Ahmedabad", "Surat", "Rajkot"],
-          };
-          setCities(statesCitiesLocal[found.state] || []);
+          if (found.state) {
+            axios
+              .get(
+                `/api/v1/locations/${encodeURIComponent(found.state)}/cities`
+              )
+              .then((r) => setCities(r.data.cities || []))
+              .catch(() => setCities([]));
+          }
         }
       })
       .catch((err) => console.error(err));
@@ -158,7 +171,7 @@ export default function EditForm() {
             required
           >
             <option value="">Select State</option>
-            {Object.keys(statesCities).map((st) => (
+            {states.map((st) => (
               <option key={st} value={st}>
                 {st}
               </option>
